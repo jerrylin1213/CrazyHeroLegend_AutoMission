@@ -1,6 +1,5 @@
-function test(a, b=6){
-    console.log(a+b)
+class Town {
+    constructor(name){
+        this.name = name;
+    }
 }
-
-
-test(4, 5);
