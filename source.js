@@ -20,6 +20,7 @@ const npcObjectImages = {
     "老婆婆環": "./images/老婆婆環.JPG",
     "西門廣環": "./images/西門廣環.JPG",
     "小裁縫環": "./images/小裁縫環.JPG",
+    "老裁縫環": "./images/老裁縫環.JPG",
     "茶花女環": "./images/茶花女環.JPG",
     "聽琴環": "./images/聽琴環.JPG",
     "店小二環": "./images/店小二環.JPG",
@@ -108,6 +109,7 @@ const npcObjectImages = {
     "武館": "./images/武館.JPG",
     "賭坊": "./images/賭坊.JPG",
     "衙門": "./images/衙門.JPG",
+    "鎮長家": "./images/鎮長家.JPG",
 
     //平安
     "神秘人": "./images/神秘人.JPG",

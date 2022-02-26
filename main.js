@@ -1,88 +1,6 @@
 // Screenshot authorication is required.
-// requestScreenCapture();
-"ui";
-ui.layout(
-    <vertical bg="#A8DAFC">
-        <appbar>
-            <toolbar title="暴走英雄壇跑環腳本" id="title" align="center" size="20em">
-                <button bg="#FF00CED1" id="exitBtn" layout_gravity="right" textColor="#ffffff" text="離開" style="Widget.AppCompat.Button.Borderless.Colored" w="auto" />
-            </toolbar>
-        </appbar>
-        <horizontal marginTop="15">
-            <text layout_weight="1" marginTop="5" gravity="center">請先打開無障礙服務以確保腳本能正常運行</text>
-            <card bg="#FCEDA9">
-                <Switch layout_weight="1" radius="80" marginRight="15" layout_gravity="right" paddingLeft="10" w="130dp" id="autoService" text="無障礙服務" checked="{{auto.service != null}}"></Switch>
-            </card>
-        </horizontal>
-
-        <horizontal gravity="center" marginTop="150">
-            <text textColor="#0f3140">自動跑環在老乞丐出現的那30分鐘會無法運行，請稍後再試。</text>
-        </horizontal>
-        <horizontal gravity="center" marginTop="10">
-            <text textColor="#0f3140">請打開遊戲，進入鎮長家後再點選自動跑環按鈕。</text>
-        </horizontal>
-        <button id="autoDailyBtn" layout_gravity="center" w="80" text="自動跑環"></button>
-        <button id="testBtn" layout_gravity="center" w="80" text="測試按鈕"></button>
-        <button id="stopTestBtn" layout_gravity="center" w="80" text="停止測試按鈕"></button>
-    </vertical>
-);
-
-
-let clickButton = (() => {
-    var o_shouquan = text("允許").findOnce()
-    if(o_shouquan){
-        click(o_shouquan.bounds().centerX(), o_shouquan.bounds().centerY());
-        sleep(500);
-    }
-});
-
-var thread = threads.start(function(){
-    setInterval(function(){
-        
-    }, 5000)
-})
-
-ui.testBtn.on("click", () => {
-    thread.setTimeout(function(){
-        log("当前线程(子线程):" + threads.currentThread());
-        requestScreenCapture();
-    }, 1000);
-})
-
-ui.stopTestBtn.on("click", () => {
-    the_thread.interrupt();
-    log("停止主線程");
-})
-
-ui.exitBtn.on("click", () => {
-    threads.shutDownAll();
-    ui.finish();
-});
-
-ui.autoService.on("check", function(checked){
-    if(checked && auto.service == null){
-        app.startActivity({
-            action: "android.settings.ACCESSIBILITY_SETTINGS"
-        });
-    }
-    if (!checked && auto.service != null){
-        auto.service.disableSelf();
-    }
-});
-
-ui.emitter.on("resume", function(){
-    ui.autoService.checked = auto.service != null;
-});
-
-ui.autoDailyBtn.on("click", ()=>{
-    if (ui.autoService.checked == false){
-        alert("請先打開無障礙模式")
-    }
-    else{
-        app.launchApp("暴走英雄壇");
-        PickUpMission();
-    }
-});
+requestScreenCapture();
+app.launchApp("暴走英雄壇");
 
 // var declaration
 let source = require('./source.js');
@@ -91,27 +9,34 @@ const height = device.height * ratio;
 const width = device.width * ratio;
 const bigMap = [Math.round(device.width / 2 + width * 0.34), Math.round(device.height - height + height * 0.052)];
 const closeBigMap = [Math.round(device.width / 2 + width * 0.426), Math.round(device.height - height + height * 0.265)];
-let closeNpcWindow = [Math.round(device.width / 2 + width * 0.437), Math.round(device.height - height + height * 0.745)];
+const closeNpcWindow = [Math.round(device.width / 2 + width * 0.437), Math.round(device.height - height + height * 0.745)];
 
-function readImages(selectedObject){
-    let npc = images.read(source.npcObjectImages[selectedObject]);
+//take in npcObjectImages key. return coordinate and key
+function ReadImages(selectedObject){
+    let npc;
+    try {
+        npc = images.read(source.npcObjectImages[selectedObject]);
+    } catch (error) {
+        toastLog(error + "\n" + selectedObject);
+    }
     // the game's ratio is fixed. So the actual ratio depends on whether height * 0.5625 > width
     npc = images.scale(npc, ratio, ratio);
     return [npc, selectedObject]
 }
-
-function findThenClickObject(npc){
+// Work with readImages. take in coordinate and key.
+function FindThenClickObject(npc){
     let isNpcFound = false;
     let countsForFindNPC = 0;
     
     // find npc for 20 times every 0.3sec before giving up
     while(countsForFindNPC < 20 && !isNpcFound){
         // isNpcFound returns both the XY coordinates and a boolean
-        isNpcFound = findImage(captureScreen(), npc[0]);
+        isNpcFound = findImage(captureScreen(), npc[0], {
+            threshold: 0.8
+        });
         sleep(300);
         countsForFindNPC += 1;
     }
-    
     if(isNpcFound){
         toast("已找到對象: " + npc[1]);
         isNpcFound = "" + isNpcFound;
@@ -120,16 +45,15 @@ function findThenClickObject(npc){
     }
     else{
         toast("未找到對象");
-        engines.stopAll();
     }
 }
 
-// This override function is for mission
-function findObject(object){
+// Same as FindThenClickObject but without clicking
+function FindObject(object){
     let isObjectFound = false;
     let countsForFindNPC = 0;
     
-    // find npc for 20 times every 0.3sec before giving up
+    // find npc for 2 times every 0.3sec before giving up
     while(countsForFindNPC < 2 && !isObjectFound){
         // isObjectFound returns both the XY coordinates and a boolean
         isObjectFound = findImage(captureScreen(), object[0], {
@@ -137,25 +61,23 @@ function findObject(object){
         });
         countsForFindNPC += 1;
     }
-    
     if(isObjectFound){
-        isObjectFound = "" + isObjectFound;
-        let coordinates = isObjectFound.substring(1, isObjectFound.length-1).split(".0, ");
+        isObjectFound = "" + isObjectFound;isObjectFound.substring(1, isObjectFound.length-1).split(".0, ");
         return object[1];
     }
 }
 
-function talkToObject(){
-    findThenClickObject(readImages("交談"), 300);
+function TalkToObject(){
+    FindThenClickObject(ReadImages("交談"), 300);
 }
 
-function swipeLeft(){
+function SwipeLeft(){
     sleep(5000);
     swipe((device.width * ratio * 0.5), (device.height * ratio * 0.5), 
     0, Math.round(device.height * ratio * 0.5), 500);
 }
 
-function swipeRight(){
+function SwipeRight(){
     sleep(5000);
     swipe((device.width * ratio * 0.5), (device.height * ratio * 0.5), 
     Math.round(device.width * ratio), Math.round(device.height * ratio * 0.5), 500);
@@ -163,22 +85,33 @@ function swipeRight(){
 
 // 在鎮長家使用 
 function PickUpMission(){
-    findThenClickObject(readImages("鎮長"));
-    talkToObject();
+    FindThenClickObject(ReadImages("鎮長"));
+    TalkToObject();
     sleep(500);
     click(device.width/2, device.height/2);
-    let town = GetTown();
-    return GetNPC(town);
+    let town, npc;
+    let count = 0;
+    while(town == undefined && count < 3){
+        town = GetTown();
+        sleep(1000);
+        count++;
+    }
+    while(npc == undefined && count < 3){
+        npc = GetNPC(town.slice(0, town.length-1));
+        sleep(1000);
+        count++;
+    }
+    return npc;
 }
-
+// Loop thru list of possible towns
 function GetTown(){
     let town;
     let count = 0;
-    while(count < source.allPossibleTowns.length * 2 && town == undefined){
-        town = findObject(readImages(source.allPossibleTowns[count % source.allPossibleTowns.length]), true);
+    while(count < source.allPossibleTowns.length && town == undefined){
+        town = FindObject(ReadImages(source.allPossibleTowns[count]));
         count++;
     }
-    return town.slice(0, town.length-1);
+    return town;
 }
 
 function GetNPC(town){
@@ -190,13 +123,39 @@ function GetNPC(town){
             possibleNPCs.push([town, place, npc]);
         }
     }
-    while(count < possibleNPCs.length && NPC == undefined){
-        NPC = findObject(readImages(possibleNPCs[count][2] + "環"));
+    while(count < possibleNPCs.length * 3 && NPC == undefined){
+        NPC = FindObject(ReadImages(possibleNPCs[count][2] + "環"));
         count++;
     }
     click(bigMap[0], bigMap[1]);
     return possibleNPCs[count-1];
 }
 
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
 
-// toast(PickUpMission());
+function MayorHomeToTowns(destination_town){
+    if(FindObject(ReadImages("鎮長家")) == undefined){
+        swipe(Math.round(device.width / 2), 
+        Math.round(device.height * 2 / 3), 
+        Math.round(device.width / 2),
+        Math.round(device.height / 3), 500)
+    }
+    MoveByWorldMap("鎮長家", "出鎮長家");
+    MoveByWorldMap("鎮東", "鎮東進中心");
+    MoveByWorldMap("中心", "平安驛站");
+    sleep(1000);
+    FindThenClickObject(ReadImages("驛站"));
+    FindThenClickObject(destination_town);
+}
+
+function MoveByWorldMap(current_location, destination){
+    FindThenClickObject(ReadImages(current_location));
+    FindThenClickObject(ReadImages(destination));
+    click(closeBigMap[0], closeBigMap[1]);
+}
+
+let missionContent = PickUpMission();
+toast(missionContent);
+MayorHomeToTowns(ReadImages(["驛站" + missionContent[0]]));
