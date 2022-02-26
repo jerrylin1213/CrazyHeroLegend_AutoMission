@@ -87,6 +87,7 @@ const npcObjectImages = {
     "聶隱娘環": "./images/聶隱娘環.JPG",
     "胡屠夫環": "./images/胡屠夫環.JPG",
     "鐵匠環": "./images/鐵匠環.JPG",
+    "勁松道人環": "./images/勁松道人環.JPG",
     
 
     //當前場景
@@ -117,12 +118,12 @@ const npcObjectImages = {
     "鎮長": "./images/鎮長.JPG",
     "鞭龍": "./images/鞭龍.JPG",
     "刀龍": "./images/刀龍.JPG",
+    "雙倍龍": "./images/雙倍龍.JPG",
     
     "交談": "./images/交談.JPG",
     "戰鬥": "./images/fight.JPG",
     "重試": "./images/重試.JPG",
 
-    
     "進客棧": "./images/進客棧.JPG",
     "出客棧": "./images/出客棧.JPG",
     "進鎮長家": "./images/進鎮長家.JPG",
@@ -162,12 +163,73 @@ const npcObjectImages = {
     
     "小商販賣花妞西門廣位置": "./images/小商販賣花妞西門廣位置.JPG",
     "瘋老頭官兵位置": "./images/瘋老頭官兵位置.JPG",
+
+    //百花 All finished
+    "進十裏畫廊": "./images/進十裏畫廊.JPG",
+    "進琴部": "./images/進琴部.JPG",
+    "進萬花亭": "./images/進萬花亭.JPG",
+    "進書部": "./images/進書部.JPG",
+    "進畫部": "./images/進畫部.JPG",
+    "進棋部": "./images/進棋部.JPG",
+    "進後花園": "./images/進後花園.JPG",
+    "出十裏畫廊": "./images/出十裏畫廊.JPG",
+    "出琴部": "./images/出琴部.JPG",
+    "出萬花亭": "./images/出萬花亭.JPG",
+    "出書部畫部棋部": "./images/出書部畫部棋部.JPG",
+    "後花園": "./images/後花園.JPG",
+    "書部": "./images/書部.JPG",
+    "棋部": "./images/棋部.JPG",
+    "畫部": "./images/畫部.JPG",
+    "萬花亭": "./images/萬花亭.JPG",
+    "琴部": "./images/琴部.JPG",
+    "百花門": "./images/百花門.JPG",
+    "茶花女紅拂女位置": "./images/茶花女紅拂女位置.JPG",
+    "入畫": "./images/入畫.JPG",
+    "李師師": "./images/李師師.JPG",
+    "茶花女": "./images/茶花女.JPG",
+    "紅拂女": "./images/紅拂女.JPG",
+    "上官婉兒": "./images/上官婉兒.JPG",
+    "侍書": "./images/侍書.JPG",
+    "李清照": "./images/李清照.JPG",
+    "聶隱娘": "./images/聶隱娘.JPG",
+    "卓文君": "./images/卓文君.JPG",
+    "司棋": "./images/司棋.JPG",
+    "柳如是": "./images/柳如是.JPG",
+    "花童": "./images/花童.JPG",
+    "蔡文姬": "./images/蔡文姬.JPG",
+    "聽琴": "./images/聽琴.JPG",
+
+
+
+    //太極
+    "進太極山腰": "./images/進太極山腰.JPG",
+    "進紫霄大殿": "./images/進紫霄大殿.JPG",
+    "進玉清宮": "./images/進玉清宮.JPG",
+    "進上清宮": "./images/進上清宮.JPG",
+    "進太清宮": "./images/進太清宮.JPG",
+    "進山間盆地": "./images/進山間盆地.JPG",
+    "出太極山腰": "./images/出太極山腰.JPG",
+    "出紫霄大殿": "./images/出紫霄大殿.JPG",
+    "出玉清宮": "./images/出玉清宮.JPG",
+    "出上清宮": "./images/出上清宮.JPG",
+    "出太清宮": "./images/出太清宮.JPG",
+    "出山間盆地": "./images/出山間盆地.JPG",
+    //雪山
+    "進大雪山腰": "./images/進大雪山腰.JPG",
+    "進淩蕭大殿": "./images/進淩蕭大殿.JPG",
+    "進西廂房1": "./images/進西廂房1.JPG",
+    "進天池": "./images/進天池.JPG",
+    "出大雪山腰": "./images/出大雪山腰.JPG",
+    "出淩蕭大殿": "./images/出淩蕭大殿.JPG",
+    "出西廂房1": "./images/出西廂房1.JPG",
+    "出天池": "./images/出天池.JPG",
+
     //驛站
     "平安驛站": "./images/平安驛站.JPG",
     "驛站": "./images/驛站.JPG",
     "驛站苗疆": "./images/驛站苗疆.JPG",
     "驛站少林": "./images/驛站少林.JPG",
-    "驛站大雪": "./images/驛站大雪.JPG",
+    "驛站雪山": "./images/驛站雪山.JPG",
     "驛站太極": "./images/驛站太極.JPG",
     "驛站藏血": "./images/驛站藏血.JPG",
     "驛站丐幫": "./images/驛站丐幫.JPG",
@@ -251,13 +313,13 @@ const allNPCLocation = {
         "豆腐店":{
             "潘小蓮": "潘小蓮"
         },
+        "裁縫店":{
+            "老裁縫": "老裁縫",
+            "小裁縫": "小裁縫"
+        },
         "老婆婆家":{
             "老婆婆": "老婆婆",
             "小饞鬼": "小饞鬼"
-        },
-        "裁縫店":{
-            "小裁縫": "小裁縫",
-            "老裁縫": "老裁縫"
         }
     },
     "百花":{
@@ -277,10 +339,6 @@ const allNPCLocation = {
             "入畫": "入畫",
             "李師師": "李師師"
         },
-        "棋部":{
-            "柳如是": "柳如是",
-            "司棋": "司棋"
-        },
         "書部":{
             "侍書": "侍書",
             "上官婉兒": "上官婉兒"
@@ -288,6 +346,10 @@ const allNPCLocation = {
         "後花園":{
             "茶花女": "茶花女",
             "紅拂女": "紅拂女"
+        },
+        "棋部":{
+            "司棋": "司棋",
+            "柳如是": "柳如是"
         }
     },
     "太極":{
@@ -336,7 +398,7 @@ const allNPCLocation = {
         "淩霄大殿":{
             "金萬山": "金萬山",
             "白自劍": "白自劍"
-        },
+        }
     }
 };
 

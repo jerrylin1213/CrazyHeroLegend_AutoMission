@@ -1,6 +1,7 @@
 // Screenshot authorication is required.
 requestScreenCapture();
-app.launchApp("暴走英雄壇");
+
+// app.launchApp("暴走英雄壇");
 
 // var declaration
 let source = require('./source.js');
@@ -12,7 +13,7 @@ const closeBigMap = [Math.round(device.width / 2 + width * 0.426), Math.round(de
 const closeNpcWindow = [Math.round(device.width / 2 + width * 0.437), Math.round(device.height - height + height * 0.745)];
 
 //take in npcObjectImages key. return coordinate and key
-function ReadImages(selectedObject){
+function ReadImages(selectedObject) {
     let npc;
     try {
         npc = images.read(source.npcObjectImages[selectedObject]);
@@ -24,12 +25,12 @@ function ReadImages(selectedObject){
     return [npc, selectedObject]
 }
 // Work with readImages. take in coordinate and key.
-function FindThenClickObject(npc){
+function FindThenClickObject(npc) {
     let isNpcFound = false;
     let countsForFindNPC = 0;
     
     // find npc for 20 times every 0.3sec before giving up
-    while(countsForFindNPC < 20 && !isNpcFound){
+    while(countsForFindNPC < 20 && !isNpcFound) {
         // isNpcFound returns both the XY coordinates and a boolean
         isNpcFound = findImage(captureScreen(), npc[0], {
             threshold: 0.8
@@ -37,7 +38,7 @@ function FindThenClickObject(npc){
         sleep(300);
         countsForFindNPC += 1;
     }
-    if(isNpcFound){
+    if(isNpcFound) {
         toast("已找到對象: " + npc[1]);
         isNpcFound = "" + isNpcFound;
         let coordinates = isNpcFound.substring(1, isNpcFound.length-1).split(".0, ");
@@ -49,54 +50,53 @@ function FindThenClickObject(npc){
 }
 
 // Same as FindThenClickObject but without clicking
-function FindObject(object){
+function FindObject(object) {
     let isObjectFound = false;
     let countsForFindNPC = 0;
     
     // find npc for 2 times every 0.3sec before giving up
-    while(countsForFindNPC < 2 && !isObjectFound){
+    while(countsForFindNPC < 2 && !isObjectFound) {
         // isObjectFound returns both the XY coordinates and a boolean
         isObjectFound = findImage(captureScreen(), object[0], {
             threshold: 0.99
         });
         countsForFindNPC += 1;
     }
-    if(isObjectFound){
+    if(isObjectFound) {
         isObjectFound = "" + isObjectFound;isObjectFound.substring(1, isObjectFound.length-1).split(".0, ");
         return object[1];
     }
 }
 
-function TalkToObject(){
+function TalkToObject() {
     FindThenClickObject(ReadImages("交談"), 300);
 }
 
-function SwipeLeft(){
+function SwipeLeft() {
     sleep(5000);
     swipe((device.width * ratio * 0.5), (device.height * ratio * 0.5), 
     0, Math.round(device.height * ratio * 0.5), 500);
 }
 
-function SwipeRight(){
+function SwipeRight() {
     sleep(5000);
     swipe((device.width * ratio * 0.5), (device.height * ratio * 0.5), 
     Math.round(device.width * ratio), Math.round(device.height * ratio * 0.5), 500);
 }
-
 // 在鎮長家使用 
-function PickUpMission(){
+function PickUpMission() {
     FindThenClickObject(ReadImages("鎮長"));
     TalkToObject();
     sleep(500);
     click(device.width/2, device.height/2);
     let town, npc;
     let count = 0;
-    while(town == undefined && count < 3){
+    while(town == undefined && count < 3) {
         town = GetTown();
         sleep(1000);
         count++;
     }
-    while(npc == undefined && count < 3){
+    while(npc == undefined && count < 3) {
         npc = GetNPC(town.slice(0, town.length-1));
         sleep(1000);
         count++;
@@ -104,58 +104,75 @@ function PickUpMission(){
     return npc;
 }
 // Loop thru list of possible towns
-function GetTown(){
+function GetTown() {
     let town;
     let count = 0;
-    while(count < source.allPossibleTowns.length && town == undefined){
+    while(count < source.allPossibleTowns.length && town == undefined) {
         town = FindObject(ReadImages(source.allPossibleTowns[count]));
         count++;
     }
     return town;
 }
 
-function GetNPC(town){
+function GetNPC(town) {
     let NPC;
     let count = 0;
     let possibleNPCs = [];
-    for(var place in source.allNPCLocation[town]){ 
-        for(var npc in source.allNPCLocation[town][place]){
+    for(var place in source.allNPCLocation[town]) { 
+        for(var npc in source.allNPCLocation[town][place]) {
             possibleNPCs.push([town, place, npc]);
         }
     }
-    while(count < possibleNPCs.length * 3 && NPC == undefined){
+    while(count < possibleNPCs.length * 3 && NPC == undefined) {
+        // toast(possibleNPCs[count][2])
         NPC = FindObject(ReadImages(possibleNPCs[count][2] + "環"));
         count++;
     }
     click(bigMap[0], bigMap[1]);
     return possibleNPCs[count-1];
-}
+} 
 
-function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
-}
-
-function MayorHomeToTowns(destination_town){
-    if(FindObject(ReadImages("鎮長家")) == undefined){
+function checkMenuIsAccessible() {
+    if(FindObject(ReadImages("鎮長家")) == undefined) {
         swipe(Math.round(device.width / 2), 
         Math.round(device.height * 2 / 3), 
         Math.round(device.width / 2),
         Math.round(device.height / 3), 500)
     }
-    MoveByWorldMap("鎮長家", "出鎮長家");
-    MoveByWorldMap("鎮東", "鎮東進中心");
-    MoveByWorldMap("中心", "平安驛站");
-    sleep(1000);
-    FindThenClickObject(ReadImages("驛站"));
-    FindThenClickObject(destination_town);
 }
 
-function MoveByWorldMap(current_location, destination){
+function MoveByWorldMap(current_location, destination) {
     FindThenClickObject(ReadImages(current_location));
     FindThenClickObject(ReadImages(destination));
     click(closeBigMap[0], closeBigMap[1]);
 }
 
-let missionContent = PickUpMission();
-toast(missionContent);
-MayorHomeToTowns(ReadImages(["驛站" + missionContent[0]]));
+function MayorHouseToTowns(wayToStation, destination_town) {
+    checkMenuIsAccessible();
+    if(destination_town != "平安") {
+        MoveByWorldMap("鎮長家", "出鎮長家");
+        MoveByWorldMap("鎮東", "鎮東進中心");
+        MoveByWorldMap("中心", "平安驛站");
+        sleep(2000);
+        FindThenClickObject(ReadImages("驛站"));
+        FindThenClickObject(wayToStation);
+    }
+    NavigateToPlace(wayToStation);
+}
+
+function NavigateToPlace() {
+    // if()
+}
+
+
+function main() {
+    let missionContent = PickUpMission(); // [town, place, npc]
+    toast(missionContent);
+    MayorHouseToTowns(ReadImages(["驛站" + missionContent[0]]), missionContent[0]);
+}
+
+// MoveByWorldMap("書部", "出書部畫部棋部");
+click(bigMap[0], bigMap[1]);
+FindThenClickObject(ReadImages("出書部畫部棋部"));
+click(closeBigMap[0], closeBigMap[1]);
+// main();
