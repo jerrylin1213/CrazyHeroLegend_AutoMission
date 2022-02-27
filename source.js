@@ -9,7 +9,6 @@ const npcObjectImages = {
     "雪山環": "./images/雪山環.JPG",
     "平安環": "./images/平安環.JPG",
     "百花環": "./images/百花環.JPG",
-
     //接到的環任務NPC
     "秀兒環": "./images/秀兒環.JPG",
     "李白環": "./images/李白環.JPG",
@@ -166,6 +165,7 @@ const npcObjectImages = {
 
     //百花 All finished
     "進十裏畫廊": "./images/進十裏畫廊.JPG",
+    "十裏畫廊": "./images/十裏畫廊.JPG",
     "進琴部": "./images/進琴部.JPG",
     "進萬花亭": "./images/進萬花亭.JPG",
     "進書部": "./images/進書部.JPG",
@@ -201,31 +201,68 @@ const npcObjectImages = {
 
 
 
-    //太極
+    //太極 All finished
+    "出太極山腰": "./images/出太極山腰.JPG",
+    "出山間盆地": "./images/出山間盆地.JPG",
     "進太極山腰": "./images/進太極山腰.JPG",
+    "出紫霄大殿玉清宮": "./images/出紫霄大殿玉清宮.JPG",
     "進紫霄大殿": "./images/進紫霄大殿.JPG",
+    "進山間盆地": "./images/進山間盆地.JPG",
     "進玉清宮": "./images/進玉清宮.JPG",
     "進上清宮": "./images/進上清宮.JPG",
     "進太清宮": "./images/進太清宮.JPG",
-    "進山間盆地": "./images/進山間盆地.JPG",
-    "出太極山腰": "./images/出太極山腰.JPG",
-    "出紫霄大殿": "./images/出紫霄大殿.JPG",
-    "出玉清宮": "./images/出玉清宮.JPG",
     "出上清宮": "./images/出上清宮.JPG",
     "出太清宮": "./images/出太清宮.JPG",
-    "出山間盆地": "./images/出山間盆地.JPG",
+    "太極山腳": "./images/太極山腳.JPG",
+    "太極山腰": "./images/太極山腰.JPG",
+    "山間盆地": "./images/山間盆地.JPG",
+    "紫霄大殿": "./images/紫霄大殿.JPG",
+    "山間盆地": "./images/山間盆地.JPG",
+    "玉清宮": "./images/玉清宮.JPG",
+    "上清宮": "./images/上清宮.JPG",
+    "采藥道人": "./images/采藥道人.JPG",
+    "燒飯道童": "./images/燒飯道童.JPG",
+    "土匪": "./images/土匪.JPG",
+    "土匪頭子": "./images/土匪頭子.JPG",
+    "迎客道童": "./images/迎客道童.JPG",
+    "迎客道人": "./images/迎客道人.JPG",
+    "淡菊道士": "./images/淡菊道士.JPG",
+    "堅竹道士": "./images/堅竹道士.JPG",
+    "蒼槐道人": "./images/蒼槐道人.JPG",
+    "古柳道人": "./images/古柳道人.JPG",
+    "傲梅道士": "./images/傲梅道士.JPG",
+    "清虛道長": "./images/清虛道長.JPG",
+    "幽蘭道士": "./images/幽蘭道士.JPG",
+    "古松道長": "./images/古松道長.JPG",
+    "勁松道人": "./images/勁松道人.JPG",
+    "蒼月道長": "./images/蒼月道長.JPG",
+    "寒柏道人": "./images/寒柏道人.JPG",
+
+
     //雪山
     "進大雪山腰": "./images/進大雪山腰.JPG",
-    "進淩蕭大殿": "./images/進淩蕭大殿.JPG",
+    "進淩霄大殿": "./images/進淩霄大殿.JPG",
     "進西廂房1": "./images/進西廂房1.JPG",
     "進天池": "./images/進天池.JPG",
     "出大雪山腰": "./images/出大雪山腰.JPG",
-    "出淩蕭大殿": "./images/出淩蕭大殿.JPG",
+    "出淩霄大殿": "./images/出淩霄大殿.JPG",
     "出西廂房1": "./images/出西廂房1.JPG",
     "出天池": "./images/出天池.JPG",
+    "解煙袋": "./images/解煙袋.JPG",
+    "白自劍": "./images/白自劍.JPG",
+    "秀兒": "./images/秀兒.JPG",
+    "天池怪俠": "./images/天池怪俠.JPG",
+    "金萬山": "./images/金萬山.JPG",
+    "大雪山腳": "./images/大雪山腳.JPG",
+    "淩霄大殿": "./images/淩霄大殿.JPG",
+    "西廂房1": "./images/西廂房1.JPG",
+    "天池": "./images/天池.JPG",
+    "大雪山腰": "./images/大雪山腰.JPG",
+
 
     //驛站
     "平安驛站": "./images/平安驛站.JPG",
+    "確認已到達平安驛站": "./images/確認已到達平安驛站.JPG",
     "驛站": "./images/驛站.JPG",
     "驛站苗疆": "./images/驛站苗疆.JPG",
     "驛站少林": "./images/驛站少林.JPG",
@@ -402,10 +439,18 @@ const allNPCLocation = {
     }
 };
 
+const firstPlaceOfTownAndTownMap = {
+    "平安": "鎮長家",
+    "太極": "太極山腳",
+    "百花": "百花門",
+    "雪山": "大雪山腳"
+};
+
 var source = { 
     "allPossibleTowns": allPossibleTowns, 
     "npcObjectImages": npcObjectImages, 
-    "allNPCLocation": allNPCLocation 
+    "allNPCLocation": allNPCLocation,
+    "firstPlaceOfTownAndTownMap": firstPlaceOfTownAndTownMap 
 };
 
 module.exports = source;
